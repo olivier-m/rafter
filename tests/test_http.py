@@ -11,8 +11,7 @@ def test_request():
 
 
 def test_response():
-    r = Response({'test': 1})
-    rsp = r.response()
+    rsp = Response({'test': 1})
 
     assert isinstance(rsp, HTTPResponse)
     assert rsp.status == 200
@@ -20,8 +19,7 @@ def test_response():
     assert rsp.content_type == 'application/json'
     assert rsp.body == b'{"test":1}'
 
-    r = Response({'test': 2}, 201, {'x-test': 'test'})
-    rsp = r.response()
+    rsp = Response({'test': 2}, 201, {'x-test': 'test'})
 
     assert isinstance(rsp, HTTPResponse)
     assert rsp.status == 201

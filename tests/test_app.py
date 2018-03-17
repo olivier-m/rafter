@@ -1,33 +1,33 @@
 # -*- coding: utf-8 -*-
 import pytest
 
-from rafter import App
+from rafter import Rafter
 from rafter.http import Request
 
 
 def test_app():
-    App(name='plop')
+    Rafter(name='plop')
 
     # No positional arguments
     with pytest.raises(TypeError):
-        App('name')
+        Rafter('name')
 
 
 def test_app_request_class():
     class Req(Request):
         pass
 
-    App(request_class=Req)
+    Rafter(request_class=Req)
 
     class Req2(object):
         pass
 
     with pytest.raises(RuntimeError):
-        App(request_class=Req2)
+        Rafter(request_class=Req2)
 
 
 def test_app_resource():
-    app = App()
+    app = Rafter()
 
     @app.resource('/')
     def test(request):

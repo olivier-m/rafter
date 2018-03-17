@@ -4,4 +4,4 @@ import sys
 
 
 here = os.path.join(os.path.dirname(__file__))
-sys.path.insert(0, os.path.realpath(os.path.join(here, '../')))
+sys.path.insert(0, os.path.abspath(os.path.join(here, '../')))

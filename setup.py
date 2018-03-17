@@ -22,7 +22,7 @@ packages = find_packages(exclude=['tests'])
 requirements = (
     'sanic >= 0.7.0',
     'schematics',
-    'ujson'
+    'ujson',
 )
 
 extras_require = {
@@ -32,7 +32,7 @@ extras_require = {
     'test': (
         'pytest',
         'pytest-cov',
-        'pytest-sanic'
+        'pytest-sanic',
     )
 }
 
@@ -40,11 +40,16 @@ extras_require = {
 setup(
     name='rafter',
     version=version,
-    description='Building blocks for REST API on top of Sanic',
+    description='Building blocks for REST APIs on top of Sanic',
     author='Olivier Meunier',
     author_email='olivier@neokraft.net',
     license='MIT',
-    url='',
+    url='https://github.com/olivier-m/rafter',
+    project_urls={
+        'Documentation': 'https://rafter.readthedocs.io/',
+        'Source': 'https://github.com/olivier-m/rafter',
+        'Tracker': 'https://github.com/olivier-m/rafter/issues',
+    },
     long_description=readme(),
     keywords='rest sanic framework',
     install_requires=requirements,

@@ -4,7 +4,7 @@ import pytest
 
 from sanic.exceptions import abort
 from sanic.response import text
-from rafter import App, ApiError, model_node, Response
+from rafter import Rafter, ApiError, model_node, Response
 
 from schematics import Model, types
 
@@ -47,7 +47,7 @@ class OutputSchema(Model):
 
 @pytest.yield_fixture(scope='module')
 def app():
-    app = App()
+    app = Rafter()
 
     @app.resource('/')
     async def main(request):

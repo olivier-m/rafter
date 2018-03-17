@@ -1,23 +1,77 @@
 # -*- coding: utf-8 -*-
 from sanic.request import Request as BaseRequest
-from sanic.response import json
+from sanic.response import HTTPResponse, json_dumps
 
 __all__ = ('Response',)
 
 
 class Request(BaseRequest):
-    __slots__ = BaseRequest.__slots__ + ('validated',)
+    """
+    This class is the default :class:`rafter.app.Rafter`'s request object
+    that will be transmitted to every route. It adds a ``validated``
+    attribute that will contains all of the validated values, if the route
+    uses schemas.
+
+    .. py:attribute:: validated
+
+            This property can contain the request data after validation
+            and conversion by the filter.
+    """
 
     def __init__(self, *args, **kwargs):
         super(Request, self).__init__(*args, **kwargs)
+
         self.validated = {}
 
 
-class Response(object):
-    def __init__(self, data, status: int=200, headers: dict={}):
-        self.data = data
-        self.status = status
-        self.headers = headers
+class Response(HTTPResponse):
+    """
+    A response object that you can return in any route. It looks a lot like
+    ``sanic.response.json`` function. With a few differences:
 
-    def response(self):
-        return json(self.data, status=self.status, headers=self.headers)
+    - Its data will be serialized at the very last moment
+    - Its data might be validated with
+      :func:`rafter.filters.filter_validate_schemas`.
+
+    Example:
+
+    .. code-block:: python
+        :emphasize-lines: 3
+
+        @app.resource('/')
+        def main_route(request):
+            return Response({'data': 'some data'})
+    """
+
+    def __init__(self, body=None, status=200, headers=None,
+                 content_type='application/json'):
+        """
+        :param body: The data this will be serialized in response.
+        :param status: The response status code.
+        :param headers: Additionnal headers.
+        :param content_type: Response MIME Type
+
+        .. important::
+            Input ``body`` will later be serialized. Its value is held by
+            the internal ``_data`` attribute.
+            Settings the ``body`` value will set this internal data but
+            getting ``body`` will return the serialized value. This is the
+            only way we can force Sanic HTTPResponse to serialize our response
+            as late as possible.
+        """
+        super(Response, self).__init__(body=None, status=status,
+                                       headers=headers,
+                                       content_type=content_type)
+        self._data = body
+
+    @property
+    def body(self):
+        return self._encode_body(json_dumps(self._data))
+
+    @body.setter
+    def body(self, data):
+        self._data = data
+
+    @property
+    def data(self):
+        return self._data
