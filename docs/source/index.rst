@@ -5,7 +5,7 @@ Rafter
 Overview
 ========
 
-Rafter is a Python 3 library providing building blocks for Restfull APIs. Yes, it's yet another framework trying, again, to solve the same problem!
+Rafter is a Python 3.5+ library providing building blocks for Restfull APIs. Yes, it's yet another framework trying, again, to solve the same problem!
 
 Rafter is built on top of `Sanic <sanic_>`_, an asynchronous and blazingly fast HTTP Python framework.
 

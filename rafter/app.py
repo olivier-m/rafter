@@ -4,7 +4,7 @@ import logging
 
 from sanic import Sanic
 
-from .exceptions import error_handler
+from .exceptions import default_error_handlers
 from .filters import filter_validate_schemas, filter_validate_response
 from .http import Request
 
@@ -28,7 +28,7 @@ class Rafter(Sanic):
     Default filters called on every resource route.
     """
 
-    default_error_handlers = ((Exception, error_handler),)
+    default_error_handlers = default_error_handlers
     """
     Default error handlers. It must be a list of tuples containing the
     exception type and a callable.

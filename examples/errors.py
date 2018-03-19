@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from sanic.exceptions import abort
+
 from rafter import Rafter, ApiError, ValidationErrors
 
 app = Rafter()
@@ -27,6 +29,11 @@ async def validation_error(request):
                 'val': ['Error message']
             }
         }})
+
+
+@app.resource('/sanic')
+async def sanic_error(request):
+    abort(599, 'A bad error.')
 
 
 if __name__ == "__main__":

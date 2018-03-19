@@ -29,8 +29,13 @@ rafter.schema
 .. autofunction:: rafter.schema.model_node
 
 
+.. _rafter_exceptions:
+
 rafter.exceptions
 =================
+
+Exceptions
+----------
 
 .. autoexception:: rafter.exceptions.ApiError
 
@@ -42,7 +47,16 @@ rafter.exceptions
     .. autoattribute:: data
     .. autoattribute:: error_list
 
-.. autofunction:: rafter.exceptions.error_handler
+Error Handlers
+--------------
+
+.. autoclass:: rafter.exceptions.ExceptionHandler
+
+    .. automethod:: __call__
+
+.. autoclass:: rafter.exceptions.SanicExceptionHandler
+
+.. autoclass:: rafter.exceptions.ApiErrorHandler
 
 
 rafter.filters

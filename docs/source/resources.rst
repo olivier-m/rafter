@@ -19,6 +19,9 @@ In this example, ``app`` is an instance of the ``Rafter`` class.
 
 The ``resource`` decorator takes the same arguments as Sanic ``route``, plus a few ones that we're going to explore.
 
+.. seealso::
+    :class:`rafter.app.Rafter`
+
 
 Schemas
 =======
@@ -79,6 +82,9 @@ Having to create many classes and use the ``types.ModelType`` could be annoying,
         class body(Model):
             name = types.StringType(required=True)
 
+.. seealso::
+    :func:`rafter.schema.model_node`
+
 
 .. _rafter_request_schema:
 
@@ -129,6 +135,9 @@ You can use it to return a special status:
 .. note::
     When you return arbitrary data from a resource, you actually return a Rafter ``Response`` instance, so validation also works in that case.
 
+.. seealso::
+    :class:`rafter.http.Response`
+
 
 Filters and validators
 ======================
@@ -172,6 +181,11 @@ Filters and validators are chained and called in the order of declaration.
 
     If you pass the ``filters`` argument to your resource, you'll override the default filters. If that's not what you want, you can pass the ``validators`` argument instead. These filters will then be chained to the default filters.
 
+.. seealso::
+    - :func:`rafter.filters.filter_validate_schemas`
+    - :func:`rafter.filters.filter_validate_response`
+
+
 
 Error management
 ================
@@ -181,6 +195,9 @@ Any ``Exception`` based error raised by your routes will be caught by the defaul
 .. literalinclude:: ../../examples/errors.py
     :caption: examples/errors.py
     :name: examples/errors.py
+
+.. seealso::
+    :ref:`rafter_exceptions`
 
 
 Now you can dig to a :doc:`full example <./example>` or explore the :doc:`API reference <./reference>`.

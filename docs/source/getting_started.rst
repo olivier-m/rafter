@@ -6,6 +6,9 @@ Getting started
 Installation
 ============
 
+.. warning::
+    Rafter works with python 3.5 or higher.
+
 Install Rafter with pip (in a virtualenv or not)::
 
     pip install rafter
