@@ -13,8 +13,11 @@ with open(os.path.join(here, 'rafter/__init__.py'), 'r') as fp:
 
 # Read README file
 def readme():
-    with open('README.md', 'r') as fp:
-        return fp.read()
+    try:
+        with open('README.rst', 'r') as fp:
+            return fp.read()
+    except OSError:
+        return ''
 
 
 packages = find_packages(exclude=['tests'])

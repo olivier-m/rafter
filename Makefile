@@ -4,6 +4,7 @@
 default: build
 
 build:
+	pandoc --from=markdown --to=rst --output=README.rst README.md
 	python setup.py sdist
 
 lint:
@@ -25,6 +26,7 @@ clean:
 	rm -rf rafter.egg-info
 	rm -rf .pytest_cache
 	rm -rf .coverage
+	rm -f README.rst
 	make -C docs clean
 	find ./ -type f -name '*.pyc' -delete
 	find ./ -type d -name __pycache__ -delete

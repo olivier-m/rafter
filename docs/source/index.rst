@@ -46,9 +46,13 @@ Now, let's see more examples and usage instruction in :doc:`the next part <./get
    reference
 
 
-Indices and tables
-==================
+Miscellaneous links
+===================
 
 * :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+
+.. * :ref:`modindex`
+.. * :ref:`search`
+
+* `Source Code <https://github.com/olivier-m/rafter/>`__
+* `Bug reports <https://github.com/olivier-m/rafter/issues>`__
