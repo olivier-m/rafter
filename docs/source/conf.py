@@ -178,5 +178,6 @@ texinfo_documents = [
 
 # -- Extension configuration -------------------------------------------------
 
-autoclass_content = 'both'
+autoclass_content = 'class'
 autodoc_default_flags = ['show-inheritance']
+add_module_names = False

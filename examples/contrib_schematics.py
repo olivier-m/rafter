@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
-from sanic.exceptions import abort
 from sanic.response import text
-from rafter import Rafter, Response, ApiError, model_node
+from rafter import Response
+from rafter.contrib.schematics import RafterSchematics, model_node
 from schematics import Model, types
 
-# Let's start our app
-app = Rafter()
+# Let's create our app
+app = RafterSchematics()
 
 
+# -- Schemas
+#
 class InputSchema(Model):
     @model_node()
     class body(Model):
@@ -18,41 +20,48 @@ class InputSchema(Model):
         name = types.StringType(default='')  # Change the default value
         id_ = types.IntType(required=True, serialized_name='id')
 
+    @model_node()
+    class headers(Model):
+        # This schema defines the request's headers.
+        # It this case, we ensure x-test is a positive integer
+        # and we provide a default value.
+        x_test = types.IntType(serialized_name='x-test', min_value=0,
+                               default=0)
+
 
 class TagSchema(Model):
     @model_node()
     class path(Model):
         # For the sake of the demonstration, because it would be easier
-        # to set the type in the route URL.
-        tag = types.IntType()
+        # to do that in the route definition.
+        tag = types.StringType(regex=r'^[a-z]+$')
 
     @model_node()
     class params(Model):
+        # Request's GET parameters validation
         sort = types.StringType(default='asc', choices=('asc', 'desc'))
         page = types.IntType(default=1, min_value=1)
 
 
 class ReturnSchema(Model):
-    name = types.StringType(required=True, min_length=1)
+    @model_node()
+    class body(Model):
+        # This schema defines the response data format
+        # for the return_schema resource.
+        name = types.StringType(required=True, min_length=1)
 
-    @model_node(serialized_name='options')  # Let's change the name!
-    class params(Model):
-        xray = types.BooleanType(default=False)
+        @model_node(serialized_name='options')  # Let's change the name!
+        class params(Model):
+            xray = types.BooleanType(default=False)
 
-
-def basic_filter(get_response, params):
-    async def decorated_filter(request, *args, **kwargs):
-        if request.args.get('action') == 'abort':
-            abort(500, 'Abort!')
-
-        if request.args.get('action') == 'text':
-            return text('test response')
-
-        return await get_response(request, *args, **kwargs)
-
-    return decorated_filter
+    @model_node()
+    class headers(Model):
+        # Validate and set a default returned header
+        x_response = types.IntType(serialized_name='x-response', default=5)
 
 
+# -- API Endpoints
+#
 @app.route('/')
 async def main(request):
     # Classic Sanic route returning a text/plain response
@@ -82,20 +91,12 @@ async def tag(request, tag):
     }
 
 
-@app.resource('/filter', validators=[basic_filter])
-async def filtered(request):
-    return request.args
-
-
 @app.resource('/return', ['POST'],
               response_schema=ReturnSchema)
 async def return_schema(request):
+    # Returns the provided data, so you can see what's going on
+    # with the response_schema and data transformation
     return request.json
-
-
-@app.resource('/error', methods=['GET'])
-def error_sync(request):
-    raise ApiError('Error', 599, info='Something really bad!')
 
 
 if __name__ == "__main__":

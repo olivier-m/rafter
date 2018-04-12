@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+.. autofunction:: model_node
+"""
+
 from schematics import types
 
 __all__ = ('model_node',)
@@ -14,9 +18,11 @@ def model_node(**kwargs):
     Example:
 
     .. code-block:: python
-        :emphasize-lines: 6,11
+        :emphasize-lines: 8,13
 
         from schematics import Model, types
+        from rafter.contrib.schematics.helpers import model_node
+
 
         class MyModel(Model):
             name = types.StringType()

@@ -6,7 +6,7 @@ app = Rafter()
 
 @app.resource('/')
 async def main_view(request):
-    # This simple view only returns a JSON response
+    # This simple view returns a JSON response
     # with the following content.
     return {
         'data': 'It works!'

@@ -21,8 +21,7 @@ You (the developer) should have fun coding whatever project you're coding instea
 That said, Rafter provides some facilities to handle the very common use cases that come with writing a Restfull API:
 
 - Declare your resources,
-- Handle, filter and validate the input data,
-- Handle the output data,
+- Provide filtering and transformation routines,
 - Handle errors with clear, extendible, structured data.
 
 And that's it! The rest is up to you; bring your ideas, your favourite ORM, write your own filters. Have fun!
@@ -31,28 +30,44 @@ And that's it! The rest is up to you; bring your ideas, your favourite ORM, writ
 Example
 =======
 
-.. literalinclude:: ../../examples/simple.py
+.. literalinclude:: ../../examples/basic.py
 
-Now, let's see more examples and usage instruction in :doc:`the next part <./getting_started>`.
+Now, let's see more examples and usage instruction in :doc:`the next part <./main/getting-started>`.
 
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents
+    :maxdepth: 2
+    :caption: Contents
 
-   getting_started
-   resources
-   example
-   reference
+    main/getting-started
+    main/resources
+    main/filters-and-errors
+    main/blueprints
+
+    contrib/schematics/index
+
+    api/index
+
+
+All examples
+============
+
+* :any:`Simple first API <examples/simple.py>`
+* :any:`Error handlers <examples/errors.py>`
+* :any:`Request and response filters <examples/filters.py>`
+* :any:`Blueprints <examples/blueprints.py>`
+* :any:`Schema validation with Schematics <examples/contrib_schematics.py>`
+
+
+Contribute!
+===========
+
+* `Source Code <https://github.com/olivier-m/rafter/>`__
+* `Bug reports <https://github.com/olivier-m/rafter/issues>`__
 
 
 Miscellaneous links
 ===================
 
 * :ref:`genindex`
-
-.. * :ref:`modindex`
-.. * :ref:`search`
-
-* `Source Code <https://github.com/olivier-m/rafter/>`__
-* `Bug reports <https://github.com/olivier-m/rafter/issues>`__
+* :ref:`modindex`

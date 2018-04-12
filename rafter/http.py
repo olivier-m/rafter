@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+"""
+.. autoclass:: rafter.http.Request
+
+.. autoclass:: rafter.http.Response
+"""
+
 from sanic.request import Request as BaseRequest
 from sanic.response import HTTPResponse, json_dumps
 
@@ -27,11 +33,10 @@ class Request(BaseRequest):
 class Response(HTTPResponse):
     """
     A response object that you can return in any route. It looks a lot like
-    ``sanic.response.json`` function. With a few differences:
-
-    - Its data will be serialized at the very last moment
-    - Its data might be validated with
-      :func:`rafter.filters.filter_validate_schemas`.
+    ``sanic.response.json`` function except that instead of immediately
+    serialize the data, it just keeps the value.
+    Serialization (to JSON) will only happen when the response's body
+    is retrieved.
 
     Example:
 

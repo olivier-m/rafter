@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
-from rafter import Rafter, ApiError
+from rafter import Rafter, ApiError, Response
 
+# Our main Rafter App
 app = Rafter()
 
 
 @app.resource('/')
 async def main_view(request):
-    # Simply arbitrary data and the response filter will convert it
-    # to a sanic.response.json response.
+    # Simply return arbitrary data and the response filter
+    # will convert it to a sanic.response.json response.
     return {
-        'data': 1
+        'data': 'Hello there!'
     }
 
 
@@ -19,10 +20,17 @@ async def with_params(request, param):
     return [param]
 
 
+@app.resource('/status')
+async def status(request):
+    # Return a 201 response with some data
+    return Response({'test': 'abc'}, 201)
+
+
 @app.resource('/error')
 async def error_response(request):
     # Return an error response with a status code and some extra data.
-    raise ApiError('Something bad happened!', 501, extra_data=':(')
+    raise ApiError('Something bad happened!', 501,
+                   extra_data=':(')
 
 
 if __name__ == "__main__":

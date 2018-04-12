@@ -20,7 +20,7 @@ def readme():
         return ''
 
 
-packages = find_packages(exclude=['tests'])
+packages = find_packages(exclude=['examples', 'tests', 'tests.*'])
 
 requirements = (
     'sanic >= 0.7.0',

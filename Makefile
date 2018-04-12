@@ -6,6 +6,7 @@ default: build
 build:
 	pandoc --from=markdown --to=rst --output=README.rst README.md
 	python setup.py sdist
+	python setup.py bdist_wheel
 
 lint:
 	flake8 ./setup.py ./rafter ./tests ./examples
@@ -22,6 +23,7 @@ upload: clean test build
 
 clean:
 	rm -rf .eggs
+	rm -rf build
 	rm -rf dist
 	rm -rf rafter.egg-info
 	rm -rf .pytest_cache

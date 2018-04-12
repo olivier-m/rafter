@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
+"""
+.. autoclass:: Rafter
+"""
+
 from functools import wraps
 import logging
 
 from sanic import Sanic
 
-from .exceptions import default_error_handlers
-from .filters import filter_validate_schemas, filter_validate_response
-from .http import Request
+from rafter.exceptions import default_error_handlers
+from rafter.filters import filter_transform_response
+from rafter.http import Request
 
 log = logging.getLogger(__name__)
 
@@ -18,12 +22,20 @@ class Rafter(Sanic):
     This class inherits Sanic's default ``Sanic`` class.
     It provides an instance of your app, to which you can add
     resources or regular Sanic routes.
+
+    .. note::
+        Please refer to `Sanic API reference <sanic_ref_>`_
+        for init arguments.
+
+    .. autoattribute:: default_filters
+    .. autoattribute:: default_error_handlers
+    .. autoattribute:: default_request_class
+
+    .. automethod:: add_resource
+    .. automethod:: resource
     """
 
-    default_filters = [
-        filter_validate_schemas,
-        filter_validate_response,
-    ]
+    default_filters = [filter_transform_response]
     """
     Default filters called on every resource route.
     """
@@ -41,11 +53,6 @@ class Rafter(Sanic):
     """
 
     def __init__(self, **kwargs):
-        """
-        .. note::
-            Please refer to `Sanic API reference <sanic_ref_>`_
-            for init arguments.
-        """
         kwargs.setdefault('request_class', self.default_request_class)
         if not issubclass(kwargs['request_class'], Request):
             raise RuntimeError('request_class should inherit '
@@ -62,29 +69,25 @@ class Rafter(Sanic):
 
         :param uri: path of the URL
         :param methods: list or tuple of methods allowed
-        :param filters: List of callable that will filter request and
-                        response data
-        :param validators: List of callable added to the filter list.
-        :param request_schema: Schema for request data
-        :param response_schema: Schema for response data
         :param host:
         :param strict_slashes:
         :param stream:
         :param version:
         :param name: user defined route name for url_for
+        :param filters: List of callable that will filter request and
+                        response data
+        :param validators: List of callable added to the filter list.
 
         :return: A decorated function
         """
         def decorator(f):
-            self.add_resource(f, uri, methods, **kwargs)
+            if kwargs.get('stream'):
+                f.is_stream = kwargs['stream']
+            self.add_resource(f, uri=uri, methods=methods, **kwargs)
 
         return decorator
 
     def add_resource(self, handler, uri, methods=frozenset({'GET'}),
-                     filters: [callable]=default_filters,
-                     validators: [callable]=[],
-                     request_schema=None,
-                     response_schema=None,
                      **kwargs):
         """
         Register a resource route.
@@ -92,29 +95,36 @@ class Rafter(Sanic):
         :param handler: function or class instance
         :param uri: path of the URL
         :param methods: list or tuple of methods allowed
+        :param host:
+        :param strict_slashes:
+        :param version:
+        :param name: user defined route name for url_for
         :param filters: List of callable that will filter request and
                         response data
         :param validators: List of callable added to the filter list.
-        :param request_schema: Schema for request data
-        :param response_schema: Schema for response data
-        :param host:
-        :param strict_slashes:
-        :param stream:
-        :param version:
-        :param name: user defined route name for url_for
 
         :return: function or class instance
         """
 
-        filter_list = filters + validators
+        sanic_args = ('host', 'strict_slashes', 'version', 'name')
+        view_kwargs = dict((k, v) for k, v in kwargs.items()
+                           if k in sanic_args)
+
+        filters = kwargs.get('filters', self.default_filters)
+        validators = kwargs.get('validators', [])
+
+        filter_list = list(filters) + list(validators)
         filter_options = {
-            'request_schema': request_schema,
-            'response_schema': response_schema
+            'filter_list': filter_list,
+            'handler': handler,
+            'uri': uri,
+            'methods': methods
         }
         filter_options.update(kwargs)
 
         handler = self.init_filters(filter_list, filter_options)(handler)
-        return self.add_route(handler, uri, methods, **kwargs)
+        return self.add_route(handler=handler, uri=uri, methods=methods,
+                              **view_kwargs)
 
     @staticmethod
     def init_filters(filter_list, params):

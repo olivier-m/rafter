@@ -2,7 +2,7 @@
 
 __version__ = '1.0.6'
 
-from .app import *         # noqa
-from .exceptions import *  # noqa
-from .http import *        # noqa
-from .schema import *      # noqa
+from rafter.app import *         # noqa
+from rafter.blueprints import *  # noqa
+from rafter.exceptions import *  # noqa
+from rafter.http import *        # noqa

@@ -26,3 +26,4 @@ def test_response():
     assert rsp.headers == {'x-test': 'test'}
     assert rsp.content_type == 'application/json'
     assert rsp.body == b'{"test":2}'
+    assert rsp.data == {'test': 2}

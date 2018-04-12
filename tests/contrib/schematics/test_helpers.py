@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from schematics import Model, types
 
-from rafter.schema import model_node
+from rafter.contrib.schematics import model_node
 
 
-def test_schema():
+def test_model_node_decorator():
     class Args(Model):
         @model_node()
         class params(Model):
