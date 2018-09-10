@@ -23,7 +23,7 @@ def readme():
 packages = find_packages(exclude=['examples', 'tests', 'tests.*'])
 
 requirements = (
-    'sanic >= 0.7.0',
+    'sanic < 0.8',
     'schematics',
     'ujson',
 )
